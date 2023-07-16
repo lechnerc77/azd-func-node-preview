@@ -1,4 +1,4 @@
-###
+### Send request locally
 POST http://localhost:7071/api/sendEmail
 
 {
@@ -6,10 +6,4 @@ POST http://localhost:7071/api/sendEmail
 }
 
 ###
-
-POST https://func-api-4lxav4lzjxuva.azurewebsites.net/api/sendEmail
-
-{
-    "name": "testName"
-}
 
