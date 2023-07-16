@@ -4,3 +4,12 @@ POST http://localhost:7071/api/sendEmail
 {
     "name": "testName"
 }
+
+###
+
+POST https://func-api-4lxav4lzjxuva.azurewebsites.net/api/sendEmail
+
+{
+    "name": "testName"
+}
+

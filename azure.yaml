@@ -4,7 +4,7 @@ name: azd-func-node-preview
 metadata:
   template: azd-starter-bicep
 services:
-   func-api:
+   communication-api:
      language: ts
      project: ./src/api
      host: function
