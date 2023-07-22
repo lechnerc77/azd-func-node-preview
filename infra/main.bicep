@@ -21,6 +21,7 @@ param keyVaultName string = ''
 param logAnalyticsName string = ''
 param resourceGroupName string = ''
 param storageAccountName string = ''
+param dataLocation string = 'Europe'
 
 @description('Id of the user or app to assign application roles')
 param principalId string = ''
@@ -113,6 +114,16 @@ module monitoring './core/monitor/monitoring.bicep' = {
     logAnalyticsName: !empty(logAnalyticsName) ? logAnalyticsName : '${abbrs.operationalInsightsWorkspaces}${resourceToken}'
     applicationInsightsName: !empty(applicationInsightsName) ? applicationInsightsName : '${abbrs.insightsComponents}${resourceToken}'
     applicationInsightsDashboardName: !empty(applicationInsightsDashboardName) ? applicationInsightsDashboardName : '${abbrs.portalDashboards}${resourceToken}'
+  }
+}
+
+module emailservice './core_local/communication/email-service.bicep' = {
+  name: 'azd-communication-email'
+  scope: rg
+  params: {
+    name: 'email-service'
+    tags: tags
+    dataLocation: dataLocation
   }
 }
 
