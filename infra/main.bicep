@@ -22,6 +22,7 @@ param logAnalyticsName string = ''
 param resourceGroupName string = ''
 param storageAccountName string = ''
 param dataLocation string = 'Europe'
+param commSecretName string = 'COMMSERVC-CONNECTION-STRING'
 
 @description('Id of the user or app to assign application roles')
 param principalId string = ''
@@ -100,6 +101,7 @@ module function './api/function.bicep' = {
     appSettings: {
       //Needed for preview of new programming model of node
       AzureWebJobsFeatureFlags: 'EnableWorkerIndexing'
+      COMM_CONNECTION_STRING: '@Microsoft.KeyVault(SecretUri=${keyVault.outputs.endpoint}secrets/${commSecretName})'
     }
   }
 }
@@ -117,13 +119,25 @@ module monitoring './core/monitor/monitoring.bicep' = {
   }
 }
 
-module emailservice './core_local/communication/email-service.bicep' = {
+// Setup communication services for sending emails
+module emailservice './corelocal/communication/email-service.bicep' = {
   name: 'azd-communication-email'
   scope: rg
   params: {
     name: 'email-service'
     tags: tags
     dataLocation: dataLocation
+  }
+}
+
+//Store Secret Communication Service Secret in KeyVault
+module emailserviceKeyVaultSecret './api/communicationServiceConnectionSecret.bicep' = {
+  name: 'emailservice-keyvault-secret'
+  scope: rg
+  params: {
+    name: commSecretName
+    keyVaultName: keyVault.outputs.name
+    communicationServiceName: emailservice.outputs.COMMUNICATION_SERVICE_NAME
   }
 }
 
