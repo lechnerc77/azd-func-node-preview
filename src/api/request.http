@@ -2,7 +2,9 @@
 POST http://localhost:7071/api/sendEmail
 
 {
-    "name": "testName"
+    "firstName": "testFirstName",
+    "lastName  ": "testLastName",
+    "email": "testEmail",
 }
 
 ###
